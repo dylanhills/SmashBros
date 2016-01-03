@@ -5,7 +5,7 @@ public class Driver {
         System.out.println("Smash Bros");
         
         NeuralNetwork n = new NeuralNetwork();
-        n.printNetwork();
-        n.printOutputs();
+        n.computeOutputs();
+        NetworkView nw = new NetworkView(n);
     }
 }

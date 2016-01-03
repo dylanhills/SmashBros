@@ -6,14 +6,14 @@ public class NeuralNetwork {
     int numOutputs;
     int neuronsPerHiddenLayer;
     Neuron[] inputs;
+    Neuron[] outputs;
     Neuron[] currentNeuronLayer;
     NeuronLayer prevLayer;
     NeuronLayer[] hiddenLayers;
-    Neuron[] outputs;
     public NeuralNetwork(){
-        numHiddenLayers = 1;
+        numHiddenLayers = 3;
         hiddenLayers = new NeuronLayer[numHiddenLayers];
-        neuronsPerHiddenLayer = 4;
+        neuronsPerHiddenLayer = 3;
         numInputs = 3;
         numOutputs = 2;
         inputs = new Neuron[numInputs];
@@ -32,12 +32,12 @@ public class NeuralNetwork {
             prevLayer = hiddenLayers[i];
         }
         for(int i = 0; i<outputs.length; i++){
-            outputs[i] = new Neuron(prevLayer.numNeurons,1);
+            outputs[i] = new Neuron(prevLayer.numNeurons,1);//change threashold here
             outputs[i].inputs = prevLayer.neurons;
         }
         
     }
-    public void printOutputs(){
+    public void computeOutputs(){
         double sum;
         for(int i = 0; i<hiddenLayers.length; i++){
             for(int j = 0; j<neuronsPerHiddenLayer;j++){
@@ -60,29 +60,9 @@ public class NeuralNetwork {
                 }
             }
             System.out.println("Output "+i+" = "+sum);
-        }
-    }
-    
-    public void printNetwork(){
-        int prevLayerSize = inputs.length;
-        System.out.println("Num Inputs: "+inputs.length);
-        System.out.println();
-        for(int i = 0; i<hiddenLayers.length; i++){
-            System.out.println("Hidden Layer Number: "+i);
-            for(int j = 0; j<neuronsPerHiddenLayer;j++){
-                for(int k = 0; k<prevLayerSize;k++){
-                    System.out.print(hiddenLayers[i].neurons[j].weights[k]+"  ");
-                }
-                System.out.println();
+            if(sum>outputs[i].threashold){
+                outputs[i].activated = true;
             }
-            prevLayerSize = neuronsPerHiddenLayer;
-        }
-        System.out.println("Num Outputs: "+outputs.length);
-        for(int i = 0; i<numOutputs; i++){
-            for(int k = 0; k<prevLayerSize;k++){
-                System.out.print(outputs[i].weights[k]+"  ");
-            }
-            System.out.println();
         }
     }
 
